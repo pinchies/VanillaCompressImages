@@ -54,7 +54,6 @@ function listFolderFiles($dir,$startdir,$manualselect){
                     if ($imgoversizeratio > $imgoversizetargetratio){
                         if ($fileext=='jpg' || $fileext=='jpeg'){
                             if ( $manualselect == 1){
-                                $haveoutput = 1;
                                 echo '<li>'.'<a href=\''.$imgurl.'\'>'.$ff.'</a> , size='.$imgfilesize. ' bytes, ratio='.$imgoversizeratio.' compressed=<a href=\''.$domain.'compressimage.php?autodelete=1&path='.$uploadpath.'\'>click</a></li>';
                             }else{
                                 if (strpos($ff, "_originalimg.".$fileext) == true) {
@@ -77,9 +76,7 @@ function listFolderFiles($dir,$startdir,$manualselect){
 $manualselect = (int)$_GET["manual"];
 if ($manualselect == 1){echo "Running in manual mode. ";}
 
-$haveoutput = 0;
 listFolderFiles($startdir,$startdir,$manualselect);
-if ($haveoutput==0 && $manualselect == 0){echo "No images were found that required compression!";}
 
 ?>
 
