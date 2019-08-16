@@ -41,14 +41,14 @@ function listFolderFiles($dir,$startdir){
         }
         else {
             $fileext = get_extension($ff);
-            //in_array($fileext,$imgextarray)
-            if ($fileext=='jpg' || $fileext=='jpeg') {
+            //
+            if (in_array($fileext,$imgextarray)) {
                 $fileisimg = 1;
                 $imgfilepath = $dir.'/'.$ff;
                 $uploadpath =substr($dir,strlen($startdir)).'/'.$ff;
                 $imgurl = $uploadurl.$uploadpath;
                 $imgfilesize=filesize($imgfilepath);
-                if ($imgfilesize > $largeimgsize && $fileext == 'jpg') {
+                if ($imgfilesize > $largeimgsize && ($fileext=='jpg' || $fileext=='jpeg')) {
                     $imgsizedetails=getimagesize($imgfilepath);
                     $estimgsize = $imgsizedetails[0]*$imgsizedetails[1]/8;
                     $imgoversizeratio = $imgfilesize/$estimgsize;
