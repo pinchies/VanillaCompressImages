@@ -1,5 +1,5 @@
 # VanillaCompressImages
-Simple php scripts to compress images in uploads folder.
+Simple php scripts for Vanilla Forum, to autocompress JPEG images in your uploads folder.
 1. Upload both scripts to your public_html folder.
 2. Configure the $startdir variable for the file path on your server.
 3. When you run the <$yourdomainname>/compressimages.php script, images will be automatically compressed and the originals DELETED
