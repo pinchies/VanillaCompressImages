@@ -79,7 +79,7 @@ if ($manualselect == 1){echo "Running in manual mode. ";}
 
 $haveoutput = 0;
 listFolderFiles($startdir,$startdir,$manualselect);
-if ($haveoutput==0){echo "No images were found that required compression!";}
+if ($haveoutput==0 && $manualselect == 0){echo "No images were found that required compression!";}
 
 ?>
 
