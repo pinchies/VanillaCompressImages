@@ -16,7 +16,7 @@ function get_extension($file) {
 }
  
     
-function listFolderFiles($dir,$startdir,$manualselect){
+function listFolderFiles($dir,$startdir,$manualselect,$domain){
     
     $imgextarray = array("jpg", "jpeg", "png", "gif");
     $largeimgsize = 800000;
@@ -37,7 +37,7 @@ function listFolderFiles($dir,$startdir,$manualselect){
         $isdir = is_dir($dir.'/'.$ff);
         if($isdir){
             //echo '<li>'.$ff.' '.$dir.'</li>';
-            listFolderFiles($dir.'/'.$ff,$startdir,$manualselect);
+            listFolderFiles($dir.'/'.$ff,$startdir,$manualselect,$domain);
         }
         else {
             $fileext = get_extension($ff);
@@ -76,7 +76,7 @@ function listFolderFiles($dir,$startdir,$manualselect){
 $manualselect = (int)$_GET["manual"];
 if ($manualselect == 1){echo "Running in manual mode. ";}
 
-listFolderFiles($startdir,$startdir,$manualselect);
+listFolderFiles($startdir,$startdir,$manualselect,$domain);
 
 ?>
 
