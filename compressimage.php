@@ -1,5 +1,8 @@
 <?php
 
+$startdir=getcwd().'/uploads';
+
+
 function get_extension($file) {
     $extension = end(explode(".", $file));
     return $extension ? $extension : false;
@@ -22,8 +25,8 @@ function compress_image($source_url, $destination_url, $quality) {
     return $destination_url;
     }
 
+$autodelete = (int)$_GET["autodelete"];
 $path = $_GET["path"];
-$startdir='/home/jgaforum/public_html/uploads';
 $quality = 50;
 $imgextarray = array("jpg", "jpeg", "png", "gif");
 $filepath = $startdir.$path;
@@ -40,6 +43,10 @@ if (!file_exists($newpathoriginal)) {
         rename("$filepath", "$newpathoriginal");
         rename("$newpathsmall", "$filepath");
     }
+
+}
+if (file_exists($newpathoriginal)) {
+    if ($autodelete == 1){unlink($newpathoriginal) or die("Couldn't delete file");}
 }
 
  header('Content-Type: image/jpeg');

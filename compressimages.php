@@ -1,22 +1,22 @@
 <html>
 <head>
-    <title>Compress Images for Vanilla Forum</title>
+    <title>Compress JPEG Images for Vanilla Forum</title>
     
 </head>
 
 <body>
 <?php
+// CONFIGURE HERE
+$domain = 'https://jgauroraforum.com/';
+$startdir=getcwd().'/uploads';
 
-$autocompress = (int)$_GET["manual"];
-$haveoutput = 0;
- 
- function get_extension($file) {
+function get_extension($file) {
  $extension = end(explode(".", $file));
  return $extension ? $extension : false;
 }
  
     
-function listFolderFiles($dir,$startdir){
+function listFolderFiles($dir,$startdir,$manualselect){
     
     $imgextarray = array("jpg", "jpeg", "png", "gif");
     $largeimgsize = 800000;
@@ -37,52 +37,47 @@ function listFolderFiles($dir,$startdir){
         $isdir = is_dir($dir.'/'.$ff);
         if($isdir){
             //echo '<li>'.$ff.' '.$dir.'</li>';
-            listFolderFiles($dir.'/'.$ff,$startdir);
+            listFolderFiles($dir.'/'.$ff,$startdir,$manualselect);
         }
         else {
             $fileext = get_extension($ff);
-            //
             if (in_array($fileext,$imgextarray)) {
                 $fileisimg = 1;
                 $imgfilepath = $dir.'/'.$ff;
                 $uploadpath =substr($dir,strlen($startdir)).'/'.$ff;
-                $imgurl = $uploadurl.$uploadpath;
+                $imgurl = $domain.'uploads'.$uploadpath;
                 $imgfilesize=filesize($imgfilepath);
-                if ($imgfilesize > $largeimgsize && ($fileext=='jpg' || $fileext=='jpeg')) {
+                if ($imgfilesize > $largeimgsize ) {
                     $imgsizedetails=getimagesize($imgfilepath);
                     $estimgsize = $imgsizedetails[0]*$imgsizedetails[1]/8;
                     $imgoversizeratio = $imgfilesize/$estimgsize;
                     if ($imgoversizeratio > $imgoversizetargetratio){
-                        if ($autocompress==0){
-                            header('Location: '.$domain.'compressimage.php?path='.$uploadpath);
-                            die();
-                            
+                        if ($fileext=='jpg' || $fileext=='jpeg'){
+                            if ( $manualselect == 1){
+                                echo '<li>'.'<a href=\''.$imgurl.'\'>'.$ff.'</a> , size='.$imgfilesize. ' bytes, ratio='.$imgoversizeratio.' compressed=<a href=\''.$domain.'compressimage.php?autodelete=1&path='.$uploadpath.'\'>click</a></li>';
+                            }else{
+                                if (strpos($ff, "_originalimg.".$fileext) == true) {
+                                    unlink($imgfilepath) or die("Couldn't delete file");
+                                } 
+                                else {
+                                    header('Location: '.$domain.'compressimage.php?autodelete=1&path='.$uploadpath);
+                                    die();
+                                }
+                            }
                         }
-                        echo '<li>'.'<a href=\''.$imgurl.'\'>'.$ff.'</a> , size='.$imgfilesize. ' bytes, ratio='.$imgoversizeratio.' compressed=<a href=\''.$domain.'compressimage.php?path='.$uploadpath.'\'>click</a></li>';
                     }
-                    
                 }
-                
-                if (strpos($ff, "_originalimg.jpg") != false) {
-                    echo "WILL BE DELETED";
-                    unlink($imgfilepath) or die("Couldn't delete file");
-                } 
             }
-
-
         }
-
     }
     echo '</ol>';
 }
 
-$domain = 'https://jgauroraforum.com/';
-$startdir='/home/jgaforum/public_html/uploads';
+$manualselect = (int)$_GET["manual"];
+if ($manualselect == 1){echo "Running in manual mode. ";}
 
-$uploadurl = $domain.'uploads';
-listFolderFiles($startdir,$startdir);
-
-if ($autocompress == 1){echo "Running in manual mode. ";}
+$haveoutput = 0;
+listFolderFiles($startdir,$startdir,$manualselect);
 if ($haveoutput==0){echo "No images were found that required compression!";}
 
 ?>
