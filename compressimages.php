@@ -53,7 +53,7 @@ function listFolderFiles($dir,$startdir){
                     $estimgsize = $imgsizedetails[0]*$imgsizedetails[1]/8;
                     $imgoversizeratio = $imgfilesize/$estimgsize;
                     if ($imgoversizeratio > $imgoversizetargetratio){
-                        if ($autocompress==1){
+                        if ($autocompress==0){
                             header('Location: '.$domain.'compressimage.php?path='.$uploadpath);
                             die();
                             
