@@ -9,9 +9,10 @@
 // CONFIGURE HERE
 $domain = 'https://jgauroraforum.com/';
 $startdir=getcwd().'/uploads';
-
-function get_extension($file) {
- $extension = end(explode(".", $file));
+    
+function get_extension($filename) {
+ $splitfilename = explode(".", $filename);
+ $extension = end($splitfilename);
  return $extension ? $extension : false;
 }
  
